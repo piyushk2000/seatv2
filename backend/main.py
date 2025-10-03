@@ -34,7 +34,6 @@ class BookingStatus(str, enum.Enum):
     APPROVED = "approved"
     REJECTED = "rejected"
 
-# Removed BookingType - only weekday bookings now
 
 # Models
 class User(Base):
