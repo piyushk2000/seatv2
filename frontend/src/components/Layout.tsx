@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
@@ -5,6 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -21,25 +23,50 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { path: '/users', icon: '👥', label: 'Users', roles: ['superadmin'] },
   ]
 
-  const filteredNavItems = navItems.filter(item => 
+  const filteredNavItems = navItems.filter(item =>
     item.roles.includes(user?.role || 'user')
   )
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)' }}>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        style={{
+          position: 'fixed',
+          top: '1rem',
+          left: '1rem',
+          zIndex: 200,
+          display: 'none',
+          padding: '0.5rem',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)',
+          borderRadius: '8px',
+          color: 'var(--text-primary)',
+          cursor: 'pointer'
+        }}
+        className="mobile-menu-btn"
+      >
+        ☰
+      </button>
+
       {/* Sidebar */}
-      <aside style={{
-        width: '260px',
-        background: 'var(--bg-secondary)',
-        borderRight: '1px solid var(--border-primary)',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'fixed',
-        height: '100vh',
-        left: 0,
-        top: 0,
-        zIndex: 100
-      }}>
+      <aside 
+        style={{
+          width: '260px',
+          background: 'var(--bg-secondary)',
+          borderRight: '1px solid var(--border-primary)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'fixed',
+          height: '100vh',
+          left: 0,
+          top: 0,
+          zIndex: 100,
+          transition: 'left 0.3s ease'
+        }}
+        className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}
+      >
         {/* Logo */}
         <div style={{
           padding: '1.5rem',
@@ -53,15 +80,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           }} onClick={() => navigate('/dashboard')}>
             <div style={{ fontSize: '2rem' }}>🪑</div>
             <div>
-              <div style={{ 
-                fontSize: '1.25rem', 
+              <div style={{
+                fontSize: '1.25rem',
                 fontWeight: '700',
                 color: 'var(--text-primary)'
               }}>
                 Seat Manager
               </div>
-              <div style={{ 
-                fontSize: '0.75rem', 
+              <div style={{
+                fontSize: '0.75rem',
                 color: 'var(--text-muted)'
               }}>
                 Booking System
@@ -71,8 +98,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Navigation */}
-        <nav style={{ 
-          flex: 1, 
+        <nav style={{
+          flex: 1,
           padding: '1rem',
           overflowY: 'auto'
         }}>
@@ -158,11 +185,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div style={{
               display: 'inline-block',
               padding: '0.25rem 0.5rem',
-              background: user?.role === 'superadmin' 
-                ? 'rgba(59, 130, 246, 0.1)' 
+              background: user?.role === 'superadmin'
+                ? 'rgba(59, 130, 246, 0.1)'
                 : 'rgba(100, 116, 139, 0.1)',
-              color: user?.role === 'superadmin' 
-                ? 'var(--accent-primary)' 
+              color: user?.role === 'superadmin'
+                ? 'var(--accent-primary)'
                 : 'var(--text-muted)',
               borderRadius: '4px',
               fontSize: '0.75rem',

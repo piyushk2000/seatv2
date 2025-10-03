@@ -245,3 +245,46 @@ input::placeholder, textarea::placeholder {
   color: var(--accent-danger);
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  .sidebar {
+    left: -260px !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .sidebar.mobile-open {
+    left: 0 !important;
+  }
+  
+  main {
+    margin-left: 0 !important;
+  }
+}
+
+/* Desktop - ensure sidebar is always visible */
+@media (min-width: 769px) {
+  .sidebar {
+    left: 0 !important;
+  }
+}
+
+/* Animations for new features */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
